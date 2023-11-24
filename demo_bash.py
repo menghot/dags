@@ -40,5 +40,5 @@ with models.DAG(
 
     step1 = MyBashOperator(
         task_id="step1",
-        bash_command="echo {{execution_date}} && echo 123"
+        bash_command="echo {{execution_date}} && echo 1234"
     )
