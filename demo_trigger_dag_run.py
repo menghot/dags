@@ -11,7 +11,7 @@ with models.DAG(
         catchup=False,
 ) as dag:
     example_trigger = TriggerDagRunOperator(
-        task_id="example_trigger",
-        trigger_dag_id="example_callback",
+        task_id="trigger_spark",
+        trigger_dag_id="demo_spark_submit",
         conf={"notice": "Hello DAG!"}
     )
