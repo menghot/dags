@@ -17,7 +17,7 @@ def dag_success_alert(context):
 
 
 with DAG(
-        dag_id="example_callback",
+        dag_id="demo_spark_submit",
         schedule=None,
         start_date=pendulum.datetime(2021, 1, 1, tz="UTC"),
         dagrun_timeout=datetime.timedelta(minutes=60),
