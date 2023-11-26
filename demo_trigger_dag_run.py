@@ -52,7 +52,7 @@ with models.DAG(
         conn_id='spark_k8s',
         java_class='org.example.JavaSparkPi',
         application='hdfs://10.194.186.216:8020/tmp/demo-spark-iceberg-1.0-SNAPSHOT.jar',
-        application_args=["5"],
+        application_args=["5", ],
         total_executor_cores=2,  # Number of cores for the job
         executor_cores=1,  # Number of cores per executor
         executor_memory='1g',  # Memory per executor
@@ -66,7 +66,7 @@ with models.DAG(
             "spark.kubernetes.driver.limit.cores": "1",
             "spark.kubernetes.executor.request.cores": "1",
             "spark.kubernetes.executor.limit.cores": "1",
-            "spark.kubernetes.authenticate.driver.serviceAccountNam": "spark",
+            "spark.kubernetes.authenticate.driver.serviceAccountName": "spark",
             "spark.kubernetes.driver.volumes.hostPath.logs-dir.mount.path": "/opt/spark/logs",
             "spark.kubernetes.driver.volumes.hostPath.logs-dir.options.path": "/opt/spark/logs",
             "spark.kubernetes.executor.volumes.hostPath.logs-dir.mount.path": "/opt/spark/logs",
