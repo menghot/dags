@@ -60,7 +60,7 @@ with models.DAG(
                      "--conf spark.kubernetes.executor.volumes.hostPath.logs-dir.mount.path=/opt/spark/logs "
                      "--conf spark.kubernetes.executor.volumes.hostPath.logs-dir.options.path=/opt/spark/logs "
                      "--conf spark.eventLog.enabled=true "
-                     "--conf spark.eventLog.dir=/opt/spark/logs " 
+                     "--conf spark.eventLog.dir=file:///opt/spark/logs " 
                      "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.0.jar ",
     )
 
