@@ -2,6 +2,7 @@ from datetime import datetime
 
 from airflow.operators.trigger_dagrun import TriggerDagRunOperator
 from airflow import models
+from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 
 from operators.spark_submit import SparkBashSubmitOperator
 
@@ -46,6 +47,22 @@ with models.DAG(
                      "--conf spark.eventLog.enabled=true "
                      "--conf spark.eventLog.dir=file:///opt/spark/logs "
                      "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.0.jar ",
+    )
+
+    spark_operator_submit = SparkSubmitOperator(
+        task_id='spark_operator_submit',
+        conn_id='spark_k8s',
+        java_class='org.example.JavaSparkPi',
+        application='hdfs://10.194.186.216:8020/tmp/demo-spark-iceberg-1.0-SNAPSHOT.jar',
+        total_executor_cores='2',  # Number of cores for the job
+        executor_cores='1',  # Number of cores per executor
+        executor_memory='2g',  # Memory per executor
+        name='spark-k8s-demo',
+        verbose=True,
+        conf={
+            "spark.master.rest.enabled": "true",
+        },  # Additional Spark configurations if needed
+        dag=dag
     )
 
     example_trigger >> submit_spark_job
