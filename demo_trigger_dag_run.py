@@ -34,8 +34,6 @@ with models.DAG(
                      "--conf spark.kubernetes.submission.waitAppCompletion=true "
                      "--conf spark.kubernetes.driver.request.cores=1 "
                      "--conf spark.kubernetes.driver.limit.cores=1 "
-                     "--conf spark.driver.memory=2g "
-                     "--conf spark.executor.memory=2g "
                      "--conf spark.kubernetes.executor.request.cores=1 "
                      "--conf spark.kubernetes.executor.limit.cores=2 "
                      "--conf spark.kubernetes.authenticate.driver.serviceAccountName=spark "
@@ -54,15 +52,30 @@ with models.DAG(
         conn_id='spark_k8s',
         java_class='org.example.JavaSparkPi',
         application='hdfs://10.194.186.216:8020/tmp/demo-spark-iceberg-1.0-SNAPSHOT.jar',
-        total_executor_cores='2',  # Number of cores for the job
-        executor_cores='1',  # Number of cores per executor
-        executor_memory='2g',  # Memory per executor
-        name='spark-k8s-demo',
+        application_args=["5"],
+        total_executor_cores=2,  # Number of cores for the job
+        executor_cores=1,  # Number of cores per executor
+        executor_memory='1g',  # Memory per executor
+        name='spark-k8s',
         verbose=True,
         conf={
-            "spark.master.rest.enabled": "true",
-        },  # Additional Spark configurations if needed
+            "spark.kubernetes.node.selector.kubernetes.io/hostname": "node-10-194-183-226",
+            "spark.kubernetes.container.image": "apache/spark:3.5.0",
+            "spark.kubernetes.submission.waitAppCompletion": "true",
+            "spark.kubernetes.driver.request.cores": "1",
+            "spark.kubernetes.driver.limit.cores": "1",
+            "spark.kubernetes.executor.request.cores": "1",
+            "spark.kubernetes.executor.limit.cores": "1",
+            "spark.kubernetes.authenticate.driver.serviceAccountNam": "spark",
+            "spark.kubernetes.driver.volumes.hostPath.logs-dir.mount.path": "/opt/spark/logs",
+            "spark.kubernetes.driver.volumes.hostPath.logs-dir.options.path": "/opt/spark/logs",
+            "spark.kubernetes.executor.volumes.hostPath.logs-dir.mount.path": "/opt/spark/logs",
+            "spark.kubernetes.executor.volumes.hostPath.logs-dir.options.path": "/opt/spark/logs",
+            "spark.eventLog.enabled": "true",
+            "spark.eventLog.dir": "file:///opt/spark/logs",
+            "spark.kubernetes.namespace": "dtp",
+        },
         dag=dag
     )
 
-    example_trigger >> submit_spark_job
+    example_trigger >> submit_spark_job >> spark_operator_submit
