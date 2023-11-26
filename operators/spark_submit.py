@@ -46,7 +46,7 @@ class CustomSubprocessHook(SubprocessHook):
 
             self.log.info("Output:")
             line = ""
-            submit_result = ""
+            submit_status_result = ""
             if self.sub_process is None:
                 raise RuntimeError("The subprocess should be created here and is None!")
             if self.sub_process.stdout is not None:
@@ -54,17 +54,17 @@ class CustomSubprocessHook(SubprocessHook):
                     line = raw_line.decode(output_encoding, errors="backslashreplace").rstrip()
 
                     if "task" in line.lower():
-                        submit_result = "spark job success"
+                        submit_status_result = "spark job success"
 
-                    self.log.info("%s", line)
+                    self.log.info("# %s", line)
 
             self.sub_process.wait()
 
             self.log.info("Command exited with return code %s", self.sub_process.returncode)
             return_code: int = self.sub_process.returncode
 
-        if submit_result:
-            line = submit_result
+        if submit_status_result:
+            line = submit_status_result
 
         return SubprocessResult(exit_code=return_code, output=line)
 
