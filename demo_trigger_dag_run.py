@@ -53,10 +53,10 @@ with models.DAG(
                      "--conf spark.kubernetes.executor.limit.cores=1 "
                      "--conf spark.kubernetes.authenticate.driver.serviceAccountName=spark "
                      "--conf spark.kubernetes.namespace=dtp "
-                     "--conf spark.kubernetes.driver.volumes.hostPath.logs_dir.mount.path=/opt/spark/logs "
-                     "--conf spark.kubernetes.driver.volumes.hostPath.logs_dir.options.path=/opt/spark/logs "
-                     "--conf spark.kubernetes.executor.volumes.hostPath.logs_dir.mount.path=/opt/spark/logs "
-                     "--conf spark.kubernetes.executor.volumes.hostPath.logs_dir.options.path=/opt/spark/logs "
+                     "--conf spark.kubernetes.driver.volumes.hostPath.logs-dir.mount.path=/opt/spark/logs "
+                     "--conf spark.kubernetes.driver.volumes.hostPath.logs-dir.options.path=/opt/spark/logs "
+                     "--conf spark.kubernetes.executor.volumes.hostPath.logs-dir.mount.path=/opt/spark/logs "
+                     "--conf spark.kubernetes.executor.volumes.hostPath.logs-dir.options.path=/opt/spark/logs "
                      "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.0.jar ",
     )
 
