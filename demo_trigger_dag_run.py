@@ -39,3 +39,5 @@ with models.DAG(
                      "--conf spark.kubernetes.namespace=dtp "
                      "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.0.jar",
     )
+
+    example_trigger >> submit_spark_job
