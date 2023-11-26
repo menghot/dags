@@ -21,7 +21,7 @@ with models.DAG(
     submit_spark_job = SparkBashSubmitOperator(
         task_id="submit_spark_job",
         bash_command="spark-submit "
-                     "--master k8s://https://lb.kubesphere.local:6443 "
+                     "--master k8s://https://10.194.183.222:6443 "
                      "--deploy-mode cluster "
                      "--name spark-pi "
                      "--class org.apache.spark.examples.SparkPi "
