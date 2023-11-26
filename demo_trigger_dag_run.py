@@ -33,6 +33,8 @@ with models.DAG(
     # spark.kubernetes.namespace=dtp local:///opt/spark/examples/jars/spark-examples_2.12-3.5.0.jar
 
     # --conf spark.kubernetes.driver.volumes.hostPath.logs_dir.mount.path=/opt/spark/logs
+    # spark.eventLog.enabled true
+    # spark.eventLog.dir hdfs://namenode/shared/spark-logs
 
     submit_spark_job = SparkBashSubmitOperator(
         task_id="submit_spark_job",
@@ -57,6 +59,8 @@ with models.DAG(
                      "--conf spark.kubernetes.driver.volumes.hostPath.logs-dir.options.path=/opt/spark/logs "
                      "--conf spark.kubernetes.executor.volumes.hostPath.logs-dir.mount.path=/opt/spark/logs "
                      "--conf spark.kubernetes.executor.volumes.hostPath.logs-dir.options.path=/opt/spark/logs "
+                     "--conf spark.eventLog.enabled=true "
+                     "--conf spark.eventLog.dir=/opt/spark/logs " 
                      "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.0.jar ",
     )
 
