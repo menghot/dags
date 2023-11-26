@@ -32,6 +32,6 @@ with DAG(
                      "--executor-cores 2 "
                      "--conf spark.master.rest.enabled=true "
                      "--conf spark.master.rest.enabled=true "
-                     "--class org.example.JavaSparkPi "
+                     "--class org.apache.spark.examples.SparkPi "
                      "/opt/spark-3.4.1-bin-hadoop3/examples/jars spark-examples_2.12-3.4.1.jar",
     )
