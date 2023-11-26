@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-history-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-history-server
+  template:
+    metadata:
+      labels:
+        app: spark-history-server
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: node-10-194-183-226
+      containers:
+        - name: spark
+          args:
+            - /usr/bin/tini
+            - -s
+            - /opt/spark/bin/spark-class
+            - org.apache.spark.deploy.history.HistoryServer
+          env:
+            - name: SPARK_HISTORY_OPTS
+              value: "-Dspark.eventLog.enabled=true -Dspark.history.fs.logDirectory=/opt/spark/logs -Dspark.io.compression.codec=snappy"
+          image: apache/spark:3.5.0
+          ports:
+            - containerPort: 18080
+          volumeMounts:
+            - name: logs-dir
+              mountPath: /opt/spark/logs
+      volumes:
+        - name: logs-dir
+          hostPath:
+            path: /opt/spark/logs
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: spark-history-server
+spec:
+  ports:
+    - nodePort: 30389
+      port: 18080
+      protocol: TCP
+      targetPort: 18080
+  selector:
+    app: spark-history-server
+  type: NodePort
