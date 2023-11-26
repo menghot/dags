@@ -2,6 +2,7 @@ import datetime
 
 import pendulum
 from airflow import DAG
+from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
 
 from operators.spark_submit import SparkBashSubmitOperator
 
@@ -31,7 +32,20 @@ with DAG(
                      "--num-executors 2 "
                      "--executor-cores 2 "
                      "--conf spark.master.rest.enabled=true "
-                     "--conf spark.master.rest.enabled=true "
                      "--class org.apache.spark.examples.SparkPi "
                      "/opt/spark-3.4.1-bin-hadoop3/examples/jars/spark-examples_2.12-3.4.1.jar",
+    )
+
+    task2 = SparkSubmitOperator(
+        task_id='task2',
+        conn_id='spark_rest',
+        java_class='org.example.JavaSparkPi',
+        application='hdfs://10.194.186.216:8020/tmp/demo-spark-iceberg-1.0-SNAPSHOT.jar',
+        total_executor_cores=2,  # Number of cores for the job
+        executor_cores=2,  # Number of cores per executor
+        executor_memory='2g',  # Memory per executor
+        name='spark-pi-job',  # Name of the job
+        verbose=True,
+        conf={"spark.master.rest.enabled": "true"},  # Additional Spark configurations if needed
+        dag=dag
     )
