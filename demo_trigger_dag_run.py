@@ -7,7 +7,7 @@ from operators.spark_submit import SparkBashSubmitOperator
 
 with models.DAG(
         dag_id="demo-trigger-dag",
-        schedule="* * * * *",  # Override to match your needs
+        schedule="*/5 * * * *",  # Override to match your needs
         start_date=datetime(2023, 11, 24),
         tags=["demo"],
         catchup=False,
