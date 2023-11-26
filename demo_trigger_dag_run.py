@@ -26,7 +26,6 @@ with models.DAG(
                      "--name spark-pi "
                      "--class org.apache.spark.examples.SparkPi "
                      "--conf spark.executor.instances=2 "
-                     "--conf spark.kubernetes.authenticate.driver.serviceAccountName=spark "
                      "--conf spark.kubernetes.node.selector.kubernetes.io/hostname=node-10-194-183-226 "
                      "--conf spark.kubernetes.container.image=apache/spark:3.5.0 "
                      "--conf spark.kubernetes.submission.waitAppCompletion=true "
