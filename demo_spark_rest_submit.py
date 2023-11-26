@@ -46,6 +46,5 @@ with DAG(
         executor_memory='2g',  # Memory per executor
         name='spark-pi-job',  # Name of the job
         verbose=True,
-        conf={"spark.master.rest.enabled": "true"},  # Additional Spark configurations if needed
-        dag=dag
+        conf={"spark.master.rest.enabled": "true"},
     )
