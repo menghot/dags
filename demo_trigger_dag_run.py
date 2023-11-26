@@ -36,6 +36,7 @@ with models.DAG(
                      "--conf spark.executor.memory=2g "
                      "--conf spark.kubernetes.executor.request.cores=1 "
                      "--conf spark.kubernetes.executor.limit.cores=1 "
+                     "--conf spark.kubernetes.authenticate.driver.serviceAccountName=spark "
                      "--conf spark.kubernetes.namespace=dtp "
                      "local:///opt/spark/examples/jars/spark-examples_2.12-3.5.0.jar",
     )
