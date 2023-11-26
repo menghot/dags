@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spark-history-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: spark-history-server
+  template:
+    metadata:
+      labels:
+        app: spark-history-server
+    spec:
+      nodeSelector:
+        kubernetes.io/hostname: node-10-194-183-226
+      containers:
+        - name: spark
+          args:
+            - /usr/bin/tini
+            - -s
+            - /opt/spark/bin/spark-class
+            - org.apache.spark.deploy.history.HistoryServer
+          image: apache/spark:3.5.0
+          volumeMounts:
+            - name: logs-dir
+              mountPath: /opt/spark/logs
+            - name: config-volume
+              mountPath: /opt/spark/conf/spark-defaults.conf
+      volumes:
+        - name: logs-dir
+          hostPath:
+            path: /opt/spark/logs
+        - name: config-volume
+          configMap:
+            name: spark-defaults-conf
