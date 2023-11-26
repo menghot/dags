@@ -28,8 +28,8 @@ with DAG(
         task_id="task1",
         bash_command="spark-submit --master spark://10.194.183.226:6066 "
                      "--deploy-mode cluster "
-                     "-num-executors 2 "
-                     "-executor-cores 2 "
+                     "--num-executors=2 "
+                     "--executor-cores=2 "
                      "--conf spark.master.rest.enabled=true "
                      "--conf spark.master.rest.enabled=true "
                      "--class org.apache.spark.examples.SparkPi "
